@@ -11,4 +11,5 @@ spec:
       targetPort: {{ .Values.locust.webPort }}
       protocol: TCP
   selector:
+    webapp: locust-coordinator
     {{- include "locust.selectorLabels" . | nindent 4 }}

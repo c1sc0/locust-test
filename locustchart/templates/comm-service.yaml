@@ -12,4 +12,5 @@ spec:
       protocol: TCP
 {{/*      name: external-locust-coordinator-port*/}}
   selector:
+    webapp: locust-coordinator
     {{- include "locust.selectorLabels" . | nindent 4 }}

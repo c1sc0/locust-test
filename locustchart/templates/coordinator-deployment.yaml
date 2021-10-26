@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        webapp: locust-coordinator
         {{- include "locust.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
@@ -43,8 +44,7 @@ spec:
             - name: locust-port
               containerPort: {{ .Values.locust.locustPort }}
               protocol: TCP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          resources: {}
       nodeSelector:
         locustRole: coordinator
     {{- with .Values.affinity }}

@@ -1,38 +1,19 @@
-import lorem
-from locust import HttpUser, task, between, SequentialTaskSet
+import time
+from locust import HttpUser, task, between
 
-
-class TodoUser(HttpUser):
-    wait_time = between(2, 5)
-    todo_item = None
+class QuickstartUser(HttpUser):
+    wait_time = between(1, 5)
 
     @task
-    class CrudSequence(SequentialTaskSet):
-        @task
-        def create_todo(self):
-            headers = {"content-type": "application/json"}
-            response = self.client.post(
-                "/todo",
-                json={"Description": lorem.sentence(), "Completed": False},
-                headers=headers,
-            )
-            self.user.todo_item = response.json()
+    def hello_world(self):
+        self.client.get("/")
+#        self.client.get("/world")
 
-        @task
-        def retrieve_todo(self):
-            self.client.get(f"/todo/{self.user.todo_item['Id']}", name="/todo/[id]")
+#    @task(3)
+#    def view_items(self):
+#        for item_id in range(10):
+#            self.client.get(f"/item?id={item_id}", name="/item")
+#            time.sleep(1)
 
-        @task
-        def update_todo(self):
-            headers = {"content-type": "application/json"}
-            self.user.todo_item["Completed"] = True
-            self.client.put(
-                f"/todo/{self.user.todo_item['Id']}",
-                json=self.user.todo_item,
-                headers=headers,
-                name="/todo/[id]"
-            )
-
-        @task
-        def delete_todo(self):
-            self.client.delete(f"/todo/{self.user.todo_item['Id']}", name="/todo/[id]")
+#    def on_start(self):
+#        self.client.post("/login", json={"username":"foo", "password":"bar"})
